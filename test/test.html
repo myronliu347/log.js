@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>测试log</title>
+    <script src="../si_log.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      siLog.info('simple test');
+
+      siLog.debug('this is debug output');
+      siLog.info('this is info output');
+      siLog.warn('this is warn output');
+      siLog.error('this is error output');
+
+      siLog.info('test can`t output');
+      siLog.config.level = false
+      siLog.debug('this is debug output');
+      siLog.info('this is info output');
+      siLog.warn('this is warn output');
+      siLog.error('this is error output');
+
+      siLog.config.level = true
+      siLog.info('test only output debug');
+
+      siLog.config.level = 'debug'
+      siLog.debug('this is debug output');
+      siLog.info('this is info output');
+      siLog.warn('this is warn output');
+      siLog.error('this is error output');
+
+      siLog.config.level = true
+      siLog.info('test only output debug or info');
+
+      siLog.config.level = ['debug', 'info'];
+      siLog.debug('this is debug output');
+      siLog.info('this is info output');
+      siLog.warn('this is warn output');
+      siLog.error('this is error output');
+    </script>
+  </head>
+  <body>
+
+  </body>
+</html>
