@@ -1,5 +1,5 @@
 /*!
- * si_log.js v0.1.0
+ * si_log.js v0.1.1
  * (c) 2016 Myron Liu
  * Released under the MIT License.
  */
@@ -150,7 +150,7 @@ var Log = function () {
 
 var log = new Log('log.js');
 
-log.version = '0.1.0';
+log.version = '0.1.1';
 
 log.config = config;
 log.create = function (name) {
