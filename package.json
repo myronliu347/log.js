@@ -1,6 +1,6 @@
 {
   "name": "si-log",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "前端日志输出解决方案",
   "main": "dist/si_log_common.js",
   "scripts": {

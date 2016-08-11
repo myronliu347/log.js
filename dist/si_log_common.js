@@ -1,5 +1,5 @@
 /*!
- * si_log.js v0.1.1
+ * si_log.js v0.2.0
  * (c) 2016 Myron Liu
  * Released under the MIT License.
  */
@@ -8,7 +8,11 @@
 var config = {
   level: true,
   throwError: false,
-  printTime: false
+  appenders: {
+    console: {
+      printTime: true
+    }
+  }
 };
 
 var each = function each(loopable, callback) {
@@ -67,6 +71,45 @@ var slice = function slice(arr, start, end) {
   }
   return newArr;
 };
+
+function consoleAppender (options) {
+  return function (logInfo) {
+    var args = slice(logInfo.args);
+    args.unshift('[' + logInfo.name + ']' + (options.printTime ? '[' + logInfo.timeStr + ']' : '') + ':');
+    var level = logInfo.level;
+    if (level === 'debug') level = 'log';
+    if (console) console[level].apply(console, args);
+  };
+}
+
+var appenderMap = {};
+var register = function register(name, appender) {
+  appenderMap[name] = {};
+};
+
+var appenders = [];
+var generate = function generate(config) {
+  clear(appenders);
+  if (!config) {
+    return appenders.push(consoleAppender({ printTime: false }));
+  }
+  for (var key in config) {
+    if (!appenderMap[key]) continue;
+    appenders.push(appenderMap[key](config[key]));
+  }
+  return appenders;
+};
+
+function clear(arr) {
+  if (!arr || arr.length === 0) return;
+
+  for (var i = 0; i < arr.length; i++) {
+    arr.splice(i, 1);
+    i--;
+  }
+}
+
+register('console', consoleAppender);
 
 var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
@@ -132,27 +175,47 @@ var Log = function () {
     value: function _print(level, args) {
       if (!this._canLog(level)) return;
       args = slice(args);
-      var name = '[' + this.name + ']';
-      var timeStr = config.printTime ? '[' + getNowStr() + ']' : '';
-      args.unshift(name + timeStr + ':');
-      if (level === 'debug') level = 'log';
-      console[level].apply(console, args);
+      var obj = {
+        time: getNowStr(),
+        name: this.name,
+        args: args,
+        level: level
+      };
+      if (appenders && appenders.length > 0) {
+        for (var i = 0; i < appenders.length; i++) {
+          appenders[i](obj);
+        }
+      }
     }
   }, {
     key: '_canLog',
     value: function _canLog(level) {
-      if (!console || !config.level || config.level !== true && !eqOrIn(config.level, level)) return false;
+      if (!config.level || config.level !== true && !eqOrIn(config.level, level)) return false;
       return true;
     }
   }]);
   return Log;
 }();
 
+generate();
+
 var log = new Log('log.js');
 
-log.version = '0.1.1';
+log.version = '0.2.0';
 
-log.config = config;
+log._config = config;
+
+log.config = function (op) {
+  if (!op) return;
+  for (var key in op) {
+    if (config[key] !== undefined) config[key] = op[key];
+  }
+  if (op.appenders) generate();
+};
+
+log.appender = register;
+log.generate = generate;
+
 log.create = function (name) {
   if (!name) log.warn('please input name');
   return new Log(name || 'null');

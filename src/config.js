@@ -1,5 +1,9 @@
 export default {
   level: true,
   throwError: false,
-  printTime: false
+  appenders: {
+    console: {
+      printTime: true
+    }
+  }
 }

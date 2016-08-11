@@ -4,6 +4,8 @@ import {
   getNowStr,
   slice
 } from './utils'
+
+import {appenders} from './appenders'
 export default class Log {
 
   constructor (name) {
@@ -37,15 +39,21 @@ export default class Log {
   _print (level, args) {
     if (!this._canLog(level)) return
     args = slice(args)
-    let name = '[' + this.name + ']'
-    let timeStr = config.printTime ? '[' + getNowStr() + ']' : ''
-    args.unshift(name + timeStr + ':')
-    if (level === 'debug') level = 'log'
-    console[level].apply(console, args)
+    let obj = {
+      time: getNowStr(),
+      name: this.name,
+      args: args,
+      level: level
+    }
+    if (appenders && appenders.length > 0) {
+      for (let i = 0; i < appenders.length; i++) {
+        appenders[i](obj)
+      }
+    }
   }
 
   _canLog (level) {
-    if (!console || (!config.level || (config.level !== true && !eqOrIn(config.level, level)))) return false
+    if (!config.level || (config.level !== true && !eqOrIn(config.level, level))) return false
     return true
   }
 }

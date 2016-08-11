@@ -13,25 +13,35 @@
       siLog.error('this is error output');
 
       siLog.info('test can`t output');
-      siLog.config.level = false
+      siLog.config({
+        level: false
+      });
       siLog.debug('this is debug output');
       siLog.info('this is info output');
       siLog.warn('this is warn output');
       siLog.error('this is error output');
 
-      siLog.config.level = true
+      siLog.config({
+        level: true
+      });
       siLog.info('test only output debug');
 
-      siLog.config.level = 'debug'
+      siLog.config({
+        level: 'debug'
+      });
       siLog.debug('this is debug output');
       siLog.info('this is info output');
       siLog.warn('this is warn output');
       siLog.error('this is error output');
 
-      siLog.config.level = true
+      siLog.config({
+        level: true
+      });
       siLog.info('test only output debug or info');
 
-      siLog.config.level = ['debug', 'info'];
+      siLog.config({
+        level: ['debug', 'info']
+      });
       siLog.debug('this is debug output');
       siLog.info('this is info output');
       siLog.warn('this is warn output');

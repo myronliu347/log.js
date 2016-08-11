@@ -51,10 +51,18 @@ siLog.error('test error level');
 ### Configure output
 
 ```javascript
-siLog.config.level = true // output all level
-siLog.config.level = false // No output
-siLog.config.level = 'error'  // only output error level
-siLog.config.level = ['error', 'warn']  // only output error or warn
+siLog.config({
+  level: true
+}); // output all level
+siLog.config({
+  level: false
+}); // No output
+siLog.config({
+  level: ['error']
+});  // only output error level
+siLog.config({
+  level: ['error', 'warn']
+});  // only output error or warn
 ```
 
 ### Under different js file to use
@@ -67,6 +75,39 @@ log.debug('test in render.js output')
 // [render.js]: test in render.js output
 ```
 
+### Configure appender
+
+```javascript
+siLog.config({
+  appenders: {
+    // console
+    console: {
+        printTime: true
+    }
+    // ...more
+  }
+})
+```
+
+### more appender
+
+```javascript
+siLog.appender('test', fucntion (op) {
+  return function (logInfo) {
+    document.write('name:' + loginfo.name);
+    if (op.printTime) document.write('time:' + loginfo.timeStr);
+    document.write('args:' + JSON.stringify(logInfo.args));
+  }
+});
+
+siLog.config({
+  appenders: {
+    test: {             // use test output log
+      printTime: true
+    }
+  }
+})
+```
 
 ## API
 
@@ -85,6 +126,18 @@ equal `console.warn`
 ### error([args])
 
 equal `console.error`
+
+### create([name])
+
+create new Log instance
+
+### appender([name, appender])
+
+register a appender
+
+### config(options)
+
+change config
 
 ## License
 
