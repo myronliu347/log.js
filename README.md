@@ -1,23 +1,22 @@
 # log.js
-Log tool, provides a simple API, can be configured level, to determine the log output
+前端日志工具库，简单的api，可以通过配置不同的 *level* 和 *appender* 来输出日志
 
-## Get Started
+## 开始使用
 
-### Install
+### 安装
 
 ```html
 <script src="../si_log.js" charset="utf-8"></script>
 ```
 
-or
+或者
 
 ```shell
 npm install si-log --save
 ```
 
-### Use
+### 使用
 
-Simple
 
 ```javascript
 siLog.debug('test debug level');
@@ -48,7 +47,8 @@ siLog.info('test info level');
 siLog.warn('test warn level');
 siLog.error('test error level');
 ```
-### Configure output
+
+### 配置输出方式
 
 ```javascript
 siLog.config({
@@ -65,7 +65,7 @@ siLog.config({
 });  // only output error or warn
 ```
 
-### Under different js file to use
+### 创建多个log对象
 
 ```javascript
 // render.js
@@ -75,7 +75,7 @@ log.debug('test in render.js output')
 // [render.js]: test in render.js output
 ```
 
-### Configure appender
+### 配置输出方式
 
 ```javascript
 siLog.config({
@@ -89,7 +89,7 @@ siLog.config({
 })
 ```
 
-### more appender
+### 自定义输出方式
 
 ```javascript
 siLog.appender('test', fucntion (op) {
@@ -113,31 +113,31 @@ siLog.config({
 
 ### debug([args])
 
-equal `console.log`
+相当于 `console.log`
 
 ### info([args])
 
-equal `console.info`
+相当于 `console.info`
 
 ### warn([args])
 
-equal `console.warn`
+相当于 `console.warn`
 
 ### error([args])
 
-equal `console.error`
+相当于 `console.error`
 
 ### create([name])
 
-create new Log instance
+创建新的 Log 实例
 
 ### appender([name, appender])
 
-register a appender
+注册一个 appender
 
 ### config(options)
 
-change config
+修改配置
 
 ## License
 
